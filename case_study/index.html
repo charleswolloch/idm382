@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>IoT Study</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="master.css">
+
+</head>
+
+<div class="header">
+    <h1>IoT Case Study</h1>
+    <div class="center">
+        <img src="images/IoT_FinalImg.png" class="img_resize">
+    </div>
+</div>
+
+<div class="container">
+
+
+
+    <div class="white_back">
+        <h2>Overview</h2>
+        <p>In a timeline of roughly nine weeks, my challenge was to create a device using the Arduino MKR Wifi 1010 that could be functional using wifi connectivity. The completed device was intended for the Drexel University, Ineractive Digital Media, Internet of Things class. The IoT device uses a servo motor with physical visualizations attached to represent emotional feedback that the user deems is the appropriate response to the currently heard joke by pressing the corresponding input button. </p>
+
+
+        <h2>Context &amp; Challenge</h2>
+        <p>The goal of this project was to build a device that a user could respond to jokes with using a web interface to control what input is being shown. This device can be controlled over Wifi networks and can be used in realtime providing user engagement while telling and hearing jokes. This project was inspired by the jokes we tell in class with Jervis. Some challenges encountered along the way include:</p>
+
+        <ul>
+            <li>Making sure your Wifi is configured to support Arduino MKR Wifi 1010. You must have a secured network with password protection. (Phone hotspots also do not work)</li>
+            <li>Ordering the right parts. There are two type of Servo motors, Continuous and regular, for this project you will need a REGULAR (non continuous) servo motor.</li>
+
+        </ul>
+
+
+        <h2>Process &amp; Insight</h2>
+        <p>The project began with creating a proof of concept digitally through TinkerCad. The first step was to setup the servo motor attached to 3 buttons, each corresponding to a different rotation on the motor so that I could eventually attach physical representations of the responses for the user to see.</p>
+
+        <h3>TinkerCad Proof of Concept</h3>
+        <div class="center">
+            <img src="images/TinkerCad.png" class="img_resize">
+        </div>
+
+        <h3>TinkerCad Code</h3>
+        <pre class="coded">
+#include &lt;Servo.h&gt;
+
+// constants won't change
+const int BUTTON_PIN_1 = 7; // Arduino pin connected to button's pin
+const int BUTTON_PIN_2 = 6; // Arduino pin connected to button's pin
+const int BUTTON_PIN_3 = 5; // Arduino pin connected to button's pin
+
+
+
+const int SERVO_PIN  = 9; // Arduino pin connected to servo motor's pin
+
+Servo servo; // create servo object to control a servo
+
+// variables will change:
+int angle = 0;          // the current angle of servo motor
+
+int lastButtonState_1;    // the previous state of button
+int currentButtonState_1; // the current state of button
+
+int lastButtonState_2;    // the previous state of button
+int currentButtonState_2; // the current state of button
+
+int lastButtonState_3;    // the previous state of button
+int currentButtonState_3; // the current state of button
+
+void setup() {
+  Serial.begin(9600);                // initialize serial
+  pinMode(BUTTON_PIN_1, INPUT_PULLUP); // set arduino pin to input pull-up mode
+  pinMode(BUTTON_PIN_2, INPUT_PULLUP); // set arduino pin to input pull-up mode
+  pinMode(BUTTON_PIN_3, INPUT_PULLUP); // set arduino pin to input pull-up mode
+  servo.attach(SERVO_PIN);           // attaches the servo on pin 9 to the servo object
+
+  servo.write(angle);
+  currentButtonState_1 = digitalRead(BUTTON_PIN_1);
+  currentButtonState_2 = digitalRead(BUTTON_PIN_2);
+  currentButtonState_3 = digitalRead(BUTTON_PIN_3);
+
+
+}
+
+void loop() {
+  lastButtonState_1    = currentButtonState_1;      // save the last state
+  currentButtonState_1 = digitalRead(BUTTON_PIN_1); // read new state
+
+  if(lastButtonState_1 == HIGH &amp;&amp; currentButtonState_1 == LOW) {
+    Serial.println("The button is pressed");
+
+    // change angle of servo motor
+    if(angle == 0)
+      angle = 90;
+    else
+    if(angle == 90)
+      angle = 0;
+
+    // control servo motor arccoding to the angle
+    servo.write(angle);
+  }
+  
+  lastButtonState_2    = currentButtonState_2;      // save the last state
+  currentButtonState_2 = digitalRead(BUTTON_PIN_2); // read new state
+
+  if(lastButtonState_2 == HIGH &amp;&amp; currentButtonState_2 == LOW) {
+    Serial.println("The button is pressed");
+
+    // change angle of servo motor
+    if(angle == 0)
+      angle = 50;
+    else
+    if(angle == 50)
+      angle = 0;
+
+    // control servo motor arccoding to the angle
+    servo.write(angle);
+  }
+  
+  lastButtonState_3    = currentButtonState_3;      // save the last state
+  currentButtonState_3 = digitalRead(BUTTON_PIN_3); // read new state
+
+  if(lastButtonState_3 == HIGH &amp;&amp; currentButtonState_3 == LOW) {
+    Serial.println("The button is pressed");
+
+    // change angle of servo motor
+    if(angle == 0)
+      angle = 130;
+    else
+    if(angle == 130)
+      angle = 0;
+
+    // control servo motor arccoding to the angle
+    servo.write(angle);
+  }
+}
+
+
+</pre>
+
+        <h3>Physical Proof of Concept</h3>
+        <p>After having the proof of concept made through TinkerCad I quickly gathered the parts and created the device physically using the arduino, wires, buttons, and a servo motor.</p>
+
+        <div class="center">
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/475969417" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        <h3>Proof of Concept Code</h3>
+        <pre class="coded">
+
+#include &lt;Servo.h&gt; // constants won't change
+const int BUTTON_PIN_1 = 7; // Arduino pin connected to button's pin
+const int BUTTON_PIN_2 = 6; // Arduino pin connected to button's pin
+const int BUTTON_PIN_3 = 5; // Arduino pin connected to button's pin
+
+
+
+const int SERVO_PIN = 9; // Arduino pin connected to servo motor's pin
+
+Servo servo; // create servo object to control a servo
+
+// variables will change:
+int angle = 0; // the current angle of servo motor
+
+int lastButtonState_1; // the previous state of button
+int currentButtonState_1; // the current state of button
+
+int lastButtonState_2; // the previous state of button
+int currentButtonState_2; // the current state of button
+
+int lastButtonState_3; // the previous state of button
+int currentButtonState_3; // the current state of button
+
+void setup() {
+    Serial.begin(9600); // initialize serial
+    pinMode(BUTTON_PIN_1, INPUT_PULLUP); // set arduino pin to input pull-up mode
+    pinMode(BUTTON_PIN_2, INPUT_PULLUP); // set arduino pin to input pull-up mode
+    pinMode(BUTTON_PIN_3, INPUT_PULLUP); // set arduino pin to input pull-up mode
+    servo.attach(SERVO_PIN); // attaches the servo on pin 9 to the servo object
+
+    servo.write(angle);
+    currentButtonState_1 = digitalRead(BUTTON_PIN_1);
+    currentButtonState_2 = digitalRead(BUTTON_PIN_2);
+    currentButtonState_3 = digitalRead(BUTTON_PIN_3);
+
+
+            }
+
+void loop() {
+    lastButtonState_1 = currentButtonState_1; // save the last state
+    currentButtonState_1 = digitalRead(BUTTON_PIN_1); // read new state
+
+    if(lastButtonState_1 == HIGH &amp;&amp; currentButtonState_1 == LOW) {
+        Serial.println("The button is pressed");
+
+        // change angle of servo motor
+        if(angle == 0)
+            angle = 90;
+        else
+        if(angle == 90)
+            angle = 0;
+
+        // control servo motor arccoding to the angle
+        servo.write(angle);
+            }
+
+    lastButtonState_2 = currentButtonState_2; // save the last state
+    currentButtonState_2 = digitalRead(BUTTON_PIN_2); // read new state
+
+    if(lastButtonState_2 == HIGH &amp;&amp; currentButtonState_2 == LOW) {
+        Serial.println("The button is pressed");
+
+        // change angle of servo motor
+        if(angle == 0)
+            angle = 50;
+        else
+        if(angle == 50)
+            angle = 0;
+
+        // control servo motor arccoding to the angle
+        servo.write(angle);
+            }
+
+    lastButtonState_3 = currentButtonState_3; // save the last state
+    currentButtonState_3 = digitalRead(BUTTON_PIN_3); // read new state
+
+    if(lastButtonState_3 == HIGH &amp;&amp; currentButtonState_3 == LOW) {
+        Serial.println("The button is pressed");
+
+        // change angle of servo motor
+        if(angle == 0)
+            angle = 130;
+        else
+        if(angle == 130)
+            angle = 0;
+
+        // control servo motor accoding to the angle
+        servo.write(angle);
+            }
+            }
+</pre>
+
+        <h3> IoT Cloud Messenger</h3>
+        <p>The next step was to set up an online connection between the Arduino and the Arduino IoT over Wifi. To prove the connection was active and stable I recorded a demo of the Arduino sending messages over Wifi to the messenger widget on the Arduino IoT website.</p>
+        <div class="center">
+            <div style="padding:62.5% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/482085938" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+
+        <h3>IoT Custom Inputs</h3>
+        <p>Once the connection was stable and active I added buttons to correspond to the servo rotations and visuals. I then edited the code so the device could work over the Arduino IoT and made a proof of concept with one function working as demonstrated in this video.</p>
+        <div class="center">
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/484864988" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        <h3>IoT Custom Input Code</h3>
+        <pre class="coded">
+            /* 
+  Sketch generated by the Arduino IoT Cloud Thing "AudienceInABox"
+  https://create.arduino.cc/cloud/things/486d5b32-1f60-4ffb-9e50-3362518c6e1e 
+
+  Arduino IoT Cloud Properties description
+
+  The following variables are automatically generated and updated when changes are made to the Thing properties
+
+  String lastButtonState_1;
+  bool button_1;
+  bool button_2;
+  bool button_3;
+
+  Properties which are marked as READ/WRITE in the Cloud Thing will also have functions
+  which are called when their values are changed from the Dashboard.
+  These functions are generated with the Thing and added at the end of this sketch.
+*/
+
+#include "thingProperties.h"
+#include &lt;Servo.h&gt;
+
+// CUSTON TIMER
+long lastMessageTime = 0 ;
+long messagedDelay = 3000;
+
+String lastMessageTimeStr = "";
+
+const int SERVO_PIN = 9; // Arduino pin connected to servo motor's pin
+Servo servo; // create servo object to control a servo
+
+// variables will change:
+int angle = 0; // the current angle of servo motor
+
+void setup() {
+ 
+  // Defined in thingProperties.h
+  initProperties();
+
+ // Initialize serial and wait for port to open:
+  Serial.begin(9600);
+  // This delay gives the chance to wait for a Serial Monitor without blocking if none is found
+  delay(1500); 
+  servo.attach(SERVO_PIN); // attaches the servo on pin 9 to the servo object
+  servo.write(angle);
+
+  // Connect to Arduino IoT Cloud
+  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+  
+  /*
+     The following function allows you to obtain more information
+     related to the state of network and IoT Cloud connection and errors
+     the higher number the more granular information you’ll get.
+     The default is 0 (only errors).
+     Maximum is 4
+ */
+  setDebugMessageLevel(2);
+  ArduinoCloud.printDebugInfo();
+}
+
+void loop() {
+  ArduinoCloud.update();
+  // Your code here 
+  Serial.println("looping");
+
+if ( (millis() - lastMessageTime) > messagedDelay){
+  Serial.println("Update Message");
+  
+  lastMessageTimeStr = String(lastMessageTime);
+  lastButtonState_1 =  lastMessageTimeStr;
+  
+  
+  //reset to current time
+  lastMessageTime = millis();
+}
+  //END LOOP
+}
+
+
+void onLastButtonState1Change() {
+  // Do something
+}
+
+void onButton1Change() {
+  // Do something
+  Serial.println("Button 1 changed");
+  
+  // change angle of servo motor
+ if(angle == 0) {
+  angle = 50;
+  } else { 
+    if(angle == 50) {
+      angle = 0;
+    }
+  }
+
+
+// control servo motor arccoding to the angle
+servo.write(angle);
+
+}
+
+
+void onButton2Change() {
+  // Do something
+}
+
+
+void onButton3Change() {
+  // Do something
+}
+        </pre>
+
+        <h3>Final Product</h3>
+        <p>Once I confirmed the adjusted code was working for the single function, I quickly implemented the last of the functions and was able to complete my IoT device. Here is a demo video showcasing its functionality.</p>
+        <div class="center">
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/487482224" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+
+        <h3>Final Working Code:</h3>
+        <pre class="coded">
+/* 
+  Sketch generated by the Arduino IoT Cloud Thing "AudienceInABox"
+  https://create.arduino.cc/cloud/things/486d5b32-1f60-4ffb-9e50-3362518c6e1e 
+
+  Arduino IoT Cloud Properties description
+
+  The following variables are automatically generated and updated when changes are made to the Thing properties
+
+  String lastButtonState_1;
+  bool button_1;
+  bool button_2;
+  bool button_3;
+
+  Properties which are marked as READ/WRITE in the Cloud Thing will also have functions
+  which are called when their values are changed from the Dashboard.
+  These functions are generated with the Thing and added at the end of this sketch.
+*/
+
+#include "thingProperties.h"
+#include &lt;Servo.h&gt;
+
+// CUSTON TIMER
+long lastMessageTime = 0 ;
+long messagedDelay = 3000;
+
+String lastMessageTimeStr = "";
+
+const int SERVO_PIN = 9; // Arduino pin connected to servo motor's pin
+Servo servo; // create servo object to control a servo
+
+// variables will change:
+int angle = 0; // the current angle of servo motor
+
+void setup() {
+ 
+  // Defined in thingProperties.h
+  initProperties();
+
+ // Initialize serial and wait for port to open:
+  Serial.begin(9600);
+  // This delay gives the chance to wait for a Serial Monitor without blocking if none is found
+  delay(1500); 
+  servo.attach(SERVO_PIN); // attaches the servo on pin 9 to the servo object
+  servo.write(angle);
+
+  // Connect to Arduino IoT Cloud
+  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+  
+  /*
+     The following function allows you to obtain more information
+     related to the state of network and IoT Cloud connection and errors
+     the higher number the more granular information you’ll get.
+     The default is 0 (only errors).
+     Maximum is 4
+ */
+  setDebugMessageLevel(2);
+  ArduinoCloud.printDebugInfo();
+}
+
+void loop() {
+  ArduinoCloud.update();
+  // Your code here 
+  Serial.println("looping");
+
+if ( (millis() - lastMessageTime) > messagedDelay){
+  Serial.println("Update Message");
+  
+  lastMessageTimeStr = String(lastMessageTime);
+  lastButtonState_1 =  lastMessageTimeStr;
+  
+  
+  //reset to current time
+  lastMessageTime = millis();
+}
+  //END LOOP
+}
+
+
+void onLastButtonState1Change() {
+  // Do something
+}
+
+void onButton1Change() {
+  // Do something
+  Serial.println("Button 1 changed");
+  
+  // change angle of servo motor
+ if(angle == 0) {
+  angle = 50;
+  } else { 
+    if(angle == 50) {
+      angle = 0;
+    }
+  }
+
+
+// control servo motor arccoding to the angle
+servo.write(angle);
+
+}
+
+
+void onButton2Change() {
+  // Do something
+  Serial.println("Button 1 changed");
+  
+  // change angle of servo motor
+ if(angle == 0) {
+  angle = 90;
+  } else { 
+    if(angle == 90) {
+      angle = 0;
+    }
+  }
+
+
+// control servo motor arccoding to the angle
+servo.write(angle);
+}
+
+
+void onButton3Change() {
+ // Do something
+  Serial.println("Button 1 changed");
+  
+  // change angle of servo motor
+ if(angle == 0) {
+  angle = 130;
+  } else { 
+    if(angle == 130) {
+      angle = 0;
+    }
+  }
+
+
+// control servo motor arccoding to the angle
+servo.write(angle);
+}
+        </pre>
+
+        <h2>Solution</h2>
+        <p>The goal of this project was to build a fully functional device that allows a user to respond to a joke with 3 response choices, good, eh, or bad. The device delivers this functionaly using a servo motor and input delivered over Wifi that is interacted with through the Arduino IoT interface.</p>
+
+
+        <h2>Results</h2>
+        <p>This project was an absolute success. I was thankfully able to complete my intended concept however even though it is functionaly complete I still have plans for future updates to improve the functionality and fidelity:</p>
+        <ul>
+            <li>V2 - Create High Fidelity Physical Components</li>
+            <ul>
+                <li>Design high fidelity physical visuals through adobe illustrator, print out, and glue to servo attachment.</li>
+                <li>Paint motor housing all black and paint silver arrow to signify current setting.</li>
+            </ul>
+            <li>V3 - Update Code To Afford User Single Input</li>
+            <ul>
+                <li>Edit code to allow the user to click a button once and then after a delay the device will reset to base state.</li>
+                <li>This removes the need for the user to click a second time after they chose their response.</li>
+            </ul>
+
+
+        </ul>
+        <p> Thank You for taking the time to read about my IoT Device from conceptualization through execution!</p>
+
+
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>Charles Wolloch's IoT Case Study 2020</p>
+
+</div></html>
